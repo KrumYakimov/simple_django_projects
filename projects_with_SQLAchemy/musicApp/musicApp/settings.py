@@ -20,12 +20,18 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv_path = BASE_DIR / '.env'
+load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ezh2xqiml@0cd$a&3=f33(sdv2m7eusz_vg(_4&ztcl5)8yppm"
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+# Raise an error if SECRET_KEY is not set
+if not SECRET_KEY:
+    raise ValueError("No SECRET_KEY set for Django")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,7 +85,6 @@ WSGI_APPLICATION = "musicApp.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
